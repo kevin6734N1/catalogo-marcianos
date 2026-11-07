@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcianos - Catálogo de Sabores</title>
+    <style>
+        :root {
+            --rosa: #ff6b9d;
+            --amarillo: #ffd93d;
+            --verde: #6bcf7f;
+            --morado: #a78bfa;
+            --azul: #60a5fa;
+            --naranja: #fb923c;
+            --fondo: #fff7ed;
+            --texto: #1f2937;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #128C7E;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            color: var(--texto);
+            line-height: 1.5;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        .container { max-width: 680px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 1.2rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--rosa), var(--amarillo), var(--verde), var(--morado));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .subtitle { color: #6b7280; font-size: 1rem; margin-top: 0.3rem; }
+
+        /* Tarjeta de WhatsApp */
+        .whatsapp-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 1rem 1.2rem;
+            border-radius: 18px;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .whatsapp-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+        }
+        .whatsapp-icon-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.22);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .whatsapp-icon-circle svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+        .whatsapp-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .whatsapp-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .whatsapp-number {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .whatsapp-action {
+            background: white;
+            color: #075E54;
+            padding: 0.45rem 1rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .category {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+        .category h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid;
+        }
+        .clasicos h2 { border-color: var(--azul); color: #1e40af; }
+        .gourmet h2 { border-color: var(--morado); color: #6d28d9; }
+        .item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #f3f4f6;
+            align-items: flex-start;
+        }
+        .item:last-child { border-bottom: none; }
+        .item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #f3f4f6;
+            flex-shrink: 0;
+        }
+        .info { flex: 1; }
+        .name-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .price {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        details { margin-top: 0.4rem; }
+        summary {
+            cursor: pointer;
+            color: #4b5563;
+            font-size: 0.9rem;
+            font-weight: 500;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::before { content: "▸ "; font-size: 0.8rem; }
+        details[open] summary::before { content: "▾ "; }
+        .desc {
+            margin-top: 0.5rem;
+            padding: 0.7rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: #059669;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
+            text-decoration: none;
+            z-index: 9999;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            background: #20ba59;
+            box-shadow: 0 6px 22px rgba(37, 211, 102, 0.5);
+        }
+        .whatsapp-float svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .item img { width: 70px; height: 70px; }
+            .whatsapp-card { flex-wrap: wrap; text-align: left; }
+            .whatsapp-action { width: 100%; text-align: center; margin-top: 0.4rem; }
+            .whatsapp-float .float-text { display: none; }
+            .whatsapp-float { padding: 14px; border-radius: 50%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MARCIANOS</h1>
+            <p class="subtitle">Ricos y Deliciosos · Pura Fruta</p>
+        </header>
+
+        <!-- SECCIÓN DE CONTACTO / WHATSAPP DE MAMÁ -->
+        <a href="https://wa.me/51949245436?text=Hola%2C%20quisiera%20hacer%20un%20pedido%20de%20marcianos" target="_blank" rel="noopener noreferrer" class="whatsapp-card" title="Enviar WhatsApp">
+            <div class="whatsapp-icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12.031 2C6.511 2 2.025 6.486 2.025 12.006c0 1.907.54 3.731 1.564 5.317L2 22l4.825-1.547a9.96 9.96 0 0 0 5.206 1.472h.004c5.52 0 10.005-4.486 10.005-10.006 0-2.674-1.042-5.188-2.932-7.078A9.945 9.945 0 0 0 12.031 2zm0 18.283c-1.637 0-3.238-.439-4.636-1.27l-.332-.198-3.447 1.104 1.127-3.34-.216-.346a8.232 8.232 0 0 1-1.272-4.377c0-4.57 3.719-8.289 8.291-8.289 2.215 0 4.297.863 5.864 2.43 1.566 1.567 2.428 3.65 2.428 5.865 0 4.571-3.719 8.281-8.285 8.281zm4.544-6.208c-.249-.125-1.472-.727-1.7-.81-.228-.083-.394-.125-.56.125-.166.249-.644.81-.789.976-.145.166-.29.187-.539.062-.249-.125-1.05-.387-2.001-1.235-.74-.66-1.24-1.475-1.385-1.724-.145-.249-.015-.384.109-.508.112-.112.249-.29.373-.436.125-.145.166-.249.249-.415.083-.166.042-.311-.021-.436-.062-.125-.56-1.349-.768-1.847-.202-.486-.407-.42-.56-.428l-.477-.008c-.166 0-.436.062-.664.311-.228.249-.871.851-.871 2.075s.892 2.407 1.016 2.573c.125.166 1.755 2.68 4.251 3.758.594.257 1.058.41 1.42.525.597.19 1.14.163 1.569.099.479-.071 1.472-.602 1.68-1.183.207-.581.207-1.079.145-1.183-.062-.104-.228-.166-.477-.291z"/>
+                </svg>
+            </div>
+            <div class="whatsapp-info">
+                <span class="whatsapp-label">Haz tus pedidos al WhatsApp de Mamá</span>
+                <span class="whatsapp-number">+51 949 245 436</span>
+            </div>
+            <span class="whatsapp-action">Pedir por WhatsApp &rarr;</span>
+        </a>
+
+        <!-- CLÁSICOS -->
+        <section class="category clasicos">
+            <h2>Clásicos</h2>
+
+            <div class="item">
+                <img src="imagenes/fresa-con-leche.jpg" alt="Fresa con leche" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Fresa con leche</span>
+                        <span class="price">S/ 2.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Preparado con fresa natural y leche. Sabor suave y refrescante.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/maracuya.jpg" alt="Maracuyá" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Maracuyá</span>
+                        <span class="price">S/ 2.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Elaborado con pulpa de maracuyá natural. Ácido y refrescante.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/chocolate-con-leche.jpg" alt="Chocolate con leche" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Chocolate con leche</span>
+                        <span class="price">S/ 2.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Chocolate y leche. Cremoso y clásico.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/coco-con-leche.jpg" alt="Coco con leche" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Coco con leche</span>
+                        <span class="price">S/ 2.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Coco natural con leche. Sabor tropical suave.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/lucuma-con-leche.jpg" alt="Lúcuma con leche" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Lúcuma con leche</span>
+                        <span class="price">S/ 2.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Lúcuma natural y leche. Dulce y cremoso.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/menta.jpg" alt="Menta" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Menta</span>
+                        <span class="price">S/ 2.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Menta natural. Muy refrescante y ligero.</div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOURMET -->
+        <section class="category gourmet">
+            <h2>Gourmet</h2>
+
+            <div class="item">
+                <img src="imagenes/bombon.jpg" alt="Bombón" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Bombón</span>
+                        <span class="price">S/ 3.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Versión gourmet tipo bombón. Cremoso y rico en chocolate.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/sublime.jpg" alt="Sublime" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Sublime</span>
+                        <span class="price">S/ 3.00</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Inspirado en Sublime. Chocolate y maní o combinación especial.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/chocofresa.jpg" alt="Chocofresa" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Chocofresa</span>
+                        <span class="price">S/ 2.50</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Combinación de chocolate y fresa natural.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/chocomaracuya.jpg" alt="Chocomaracuyá" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Chocomaracuyá</span>
+                        <span class="price">S/ 2.50</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Chocolate con maracuyá. Equilibrio entre dulce y ácido.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/doble-chocolate.jpg" alt="Doble chocolate" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Doble chocolate</span>
+                        <span class="price">S/ 2.50</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Doble dosis de chocolate. Intenso y cremoso.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/chocolucuma.jpg" alt="Chocolúcuma" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Chocolúcuma</span>
+                        <span class="price">S/ 2.50</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Chocolate y lúcuma. Combinación peruana clásica.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/oreo.jpg" alt="Oreo" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Oreo</span>
+                        <span class="price">S/ 2.50</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Con trozos o sabor a galleta Oreo. Cremoso y con textura.</div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="imagenes/mentachip.jpg" alt="Mentachip" onerror="this.style.display='none'">
+                <div class="info">
+                    <div class="name-price">
+                        <span>Mentachip</span>
+                        <span class="price">S/ 2.50</span>
+                    </div>
+                    <details>
+                        <summary>Ver ingredientes</summary>
+                        <div class="desc">Menta con chips de chocolate. Refrescante y crujiente.</div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Escanea el QR en la puerta · Sabores disponibles hoy</p>
+            <p style="margin-top:0.4rem;">Pedidos al WhatsApp de Mamá: <a href="https://wa.me/51949245436" target="_blank" rel="noopener noreferrer">+51 949 245 436</a></p>
+            <p style="margin-top:0.5rem; font-size:0.75rem;">Actualice este archivo cuando cambien los sabores o disponibilidad.</p>
+        </footer>
+    </div>
+
+    <!-- BOTÓN FLOTANTE WHATSAPP -->
+    <a href="https://wa.me/51949245436?text=Hola%2C%20quisiera%20hacer%20un%20pedido%20de%20marcianos" class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="Pedir por WhatsApp">
+        <svg viewBox="0 0 24 24">
+            <path d="M12.031 2C6.511 2 2.025 6.486 2.025 12.006c0 1.907.54 3.731 1.564 5.317L2 22l4.825-1.547a9.96 9.96 0 0 0 5.206 1.472h.004c5.52 0 10.005-4.486 10.005-10.006 0-2.674-1.042-5.188-2.932-7.078A9.945 9.945 0 0 0 12.031 2zm0 18.283c-1.637 0-3.238-.439-4.636-1.27l-.332-.198-3.447 1.104 1.127-3.34-.216-.346a8.232 8.232 0 0 1-1.272-4.377c0-4.57 3.719-8.289 8.291-8.289 2.215 0 4.297.863 5.864 2.43 1.566 1.567 2.428 3.65 2.428 5.865 0 4.571-3.719 8.281-8.285 8.281zm4.544-6.208c-.249-.125-1.472-.727-1.7-.81-.228-.083-.394-.125-.56.125-.166.249-.644.81-.789.976-.145.166-.29.187-.539.062-.249-.125-1.05-.387-2.001-1.235-.74-.66-1.24-1.475-1.385-1.724-.145-.249-.015-.384.109-.508.112-.112.249-.29.373-.436.125-.145.166-.249.249-.415.083-.166.042-.311-.021-.436-.062-.125-.56-1.349-.768-1.847-.202-.486-.407-.42-.56-.428l-.477-.008c-.166 0-.436.062-.664.311-.228.249-.871.851-.871 2.075s.892 2.407 1.016 2.573c.125.166 1.755 2.68 4.251 3.758.594.257 1.058.41 1.42.525.597.19 1.14.163 1.569.099.479-.071 1.472-.602 1.68-1.183.207-.581.207-1.079.145-1.183-.062-.104-.228-.166-.477-.291z"/>
+        </svg>
+        <span class="float-text">+51 949 245 436</span>
+    </a>
+</body>
+</html>
