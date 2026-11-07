@@ -1,4 +1,4 @@
-# Catálogo de Marcianos Caseros 🍧
+# Catálogo - Marcianos Brenda 🍧
 
 Página web estática con el catálogo y carta de sabores de marcianos tradicionales y gourmet.
 Diseñado para ser publicado en **GitHub Pages** y recibir pedidos directamente vía **WhatsApp**.
